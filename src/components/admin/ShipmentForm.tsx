@@ -1,0 +1,275 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Save, Trash2, MapPin, Loader2 } from "lucide-react";
+
+const STATUS_OPTIONS = [
+  { value: "PENDING", label: "Pending" },
+  { value: "IN_TRANSIT", label: "In Transit" },
+  { value: "AT_PORT", label: "At Port" },
+  { value: "CUSTOMS", label: "In Customs" },
+  { value: "DELIVERED", label: "Delivered" },
+  { value: "DELAYED", label: "Delayed" },
+];
+
+const CARGO_TYPES = [
+  "General Cargo", "Electronics", "Chemicals", "Pharmaceuticals",
+  "Automotive", "Machinery", "Food & Beverage", "Textiles", "Project Cargo",
+];
+
+interface ShipmentData {
+  id: string;
+  trackingNumber: string;
+  description: string;
+  origin: string;
+  originLat: number;
+  originLng: number;
+  destination: string;
+  destinationLat: number;
+  destinationLng: number;
+  currentLocation: string;
+  currentLat: number;
+  currentLng: number;
+  status: string;
+  cargoType: string;
+  weight: string | null;
+  estimatedArrival: string | null;
+  clientName: string | null;
+  clientEmail: string | null;
+  notes: string | null;
+}
+
+interface Props { mode: "create" | "edit"; shipment?: ShipmentData; }
+
+export default function ShipmentForm({ mode, shipment }: Props) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
+  const [addEvent, setAddEvent] = useState(false);
+  const [eventDescription, setEventDescription] = useState("");
+
+  const [form, setForm] = useState({
+    description:      shipment?.description      ?? "",
+    origin:           shipment?.origin           ?? "",
+    originLat:        String(shipment?.originLat       ?? ""),
+    originLng:        String(shipment?.originLng       ?? ""),
+    destination:      shipment?.destination      ?? "",
+    destinationLat:   String(shipment?.destinationLat  ?? ""),
+    destinationLng:   String(shipment?.destinationLng  ?? ""),
+    currentLocation:  shipment?.currentLocation  ?? "",
+    currentLat:       String(shipment?.currentLat      ?? ""),
+    currentLng:       String(shipment?.currentLng      ?? ""),
+    status:           shipment?.status           ?? "PENDING",
+    cargoType:        shipment?.cargoType        ?? "General Cargo",
+    weight:           shipment?.weight           ?? "",
+    estimatedArrival: shipment?.estimatedArrival ?? "",
+    clientName:       shipment?.clientName       ?? "",
+    clientEmail:      shipment?.clientEmail      ?? "",
+    notes:            shipment?.notes            ?? "",
+  });
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const body = { ...form, addEvent, eventDescription };
+      let res: Response;
+      if (mode === "create") {
+        res = await fetch("/api/shipments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      } else {
+        res = await fetch(`/api/shipments/${shipment!.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      }
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error || "Failed to save"); }
+      const data = await res.json();
+      setSaved(true);
+      if (mode === "create") {
+        router.push(`/admin/shipments/${data.shipment.id}`);
+      } else {
+        setTimeout(() => setSaved(false), 3000);
+        router.refresh();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!shipment || !confirm("Delete this shipment? This cannot be undone.")) return;
+    setDeleting(true);
+    await fetch(`/api/shipments/${shipment.id}`, { method: "DELETE" });
+    router.push("/admin");
+    router.refresh();
+  }
+
+  const fieldClass = "input-field w-full px-4 py-3 rounded-xl text-sm";
+  const labelClass = "block text-xs text-[#6a80a0] mb-1.5";
+  const cardClass = "glass-card rounded-2xl p-6 shadow-sm";
+  const sectionTitle = "text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-5";
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {saved && (
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          className="p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+          Shipment saved successfully!
+        </motion.div>
+      )}
+      {error && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">{error}</div>
+      )}
+
+      {/* Cargo Info */}
+      <div className={cardClass}>
+        <h3 className={sectionTitle}>Cargo Information</h3>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2">
+            <label className={labelClass}>Description *</label>
+            <input name="description" value={form.description} onChange={handleChange} required placeholder="e.g. Industrial machinery components" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Cargo Type</label>
+            <select name="cargoType" value={form.cargoType} onChange={handleChange} className={fieldClass}>
+              {CARGO_TYPES.map((t) => <option key={t}>{t}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Weight</label>
+            <input name="weight" value={form.weight} onChange={handleChange} placeholder="e.g. 2.4 tonnes" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Status</label>
+            <select name="status" value={form.status} onChange={handleChange} className={fieldClass}>
+              {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Estimated Arrival</label>
+            <input name="estimatedArrival" value={form.estimatedArrival} onChange={handleChange} placeholder="e.g. 15 Dec 2024" className={fieldClass} />
+          </div>
+        </div>
+      </div>
+
+      {/* Origin */}
+      <div className={cardClass}>
+        <h3 className={`${sectionTitle} flex items-center gap-2`}>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#00a050]" />Origin
+        </h3>
+        <div className="grid sm:grid-cols-3 gap-4 mb-6">
+          <div className="sm:col-span-1">
+            <label className={labelClass}>City / Port *</label>
+            <input name="origin" value={form.origin} onChange={handleChange} required placeholder="e.g. Genova, Italy" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Latitude *</label>
+            <input name="originLat" value={form.originLat} onChange={handleChange} required type="number" step="any" placeholder="44.4056" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Longitude *</label>
+            <input name="originLng" value={form.originLng} onChange={handleChange} required type="number" step="any" placeholder="8.9463" className={fieldClass} />
+          </div>
+        </div>
+
+        <h3 className={`${sectionTitle} flex items-center gap-2`}>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#cc2020]" />Destination
+        </h3>
+        <div className="grid sm:grid-cols-3 gap-4">
+          <div className="sm:col-span-1">
+            <label className={labelClass}>City / Port *</label>
+            <input name="destination" value={form.destination} onChange={handleChange} required placeholder="e.g. Shanghai, China" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Latitude *</label>
+            <input name="destinationLat" value={form.destinationLat} onChange={handleChange} required type="number" step="any" placeholder="31.2304" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Longitude *</label>
+            <input name="destinationLng" value={form.destinationLng} onChange={handleChange} required type="number" step="any" placeholder="121.4737" className={fieldClass} />
+          </div>
+        </div>
+      </div>
+
+      {/* Current Location */}
+      <div className={cardClass}>
+        <h3 className={`${sectionTitle} flex items-center gap-2`}>
+          <MapPin size={14} className="text-[#0055ff]" />Current Location (Live Position)
+        </h3>
+        <div className="grid sm:grid-cols-3 gap-4 mb-4">
+          <div className="sm:col-span-1">
+            <label className={labelClass}>Location Name *</label>
+            <input name="currentLocation" value={form.currentLocation} onChange={handleChange} required placeholder="e.g. Suez Canal, Egypt" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Latitude *</label>
+            <input name="currentLat" value={form.currentLat} onChange={handleChange} required type="number" step="any" placeholder="30.5234" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Longitude *</label>
+            <input name="currentLng" value={form.currentLng} onChange={handleChange} required type="number" step="any" placeholder="32.3455" className={fieldClass} />
+          </div>
+        </div>
+
+        {mode === "edit" && (
+          <div className="mt-4 pt-4 border-t border-[#e2e8f4]">
+            <label className="flex items-center gap-2 cursor-pointer mb-3">
+              <input type="checkbox" checked={addEvent} onChange={(e) => setAddEvent(e.target.checked)} className="w-4 h-4 rounded accent-[#0055ff]" />
+              <span className="text-sm text-[#4a6080]">Add a tracking event for this location update</span>
+            </label>
+            {addEvent && (
+              <input value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} placeholder="e.g. Cargo passed through Suez Canal inspection" className={fieldClass} />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Client Info */}
+      <div className={cardClass}>
+        <h3 className={sectionTitle}>Client Information</h3>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Client Name</label>
+            <input name="clientName" value={form.clientName} onChange={handleChange} placeholder="Company or person name" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Client Email</label>
+            <input name="clientEmail" value={form.clientEmail} onChange={handleChange} type="email" placeholder="client@company.com" className={fieldClass} />
+          </div>
+          <div className="sm:col-span-2">
+            <label className={labelClass}>Notes</label>
+            <textarea name="notes" value={form.notes} onChange={handleChange} rows={3} placeholder="Internal notes..." className={`${fieldClass} resize-none`} />
+          </div>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center justify-between gap-4">
+        <button type="submit" disabled={loading} className="btn-primary flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold">
+          {loading ? <Loader2 size={18} className="animate-spin" /> : <><Save size={18} />{mode === "create" ? "Create Shipment" : "Save Changes"}</>}
+        </button>
+
+        {mode === "edit" && (
+          <button type="button" onClick={handleDelete} disabled={deleting}
+            className="flex items-center gap-2 px-5 py-3.5 rounded-xl text-sm font-semibold text-red-600 border border-red-200 hover:bg-red-50 transition-colors bg-white">
+            {deleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}Delete
+          </button>
+        )}
+      </div>
+
+      {mode === "create" && (
+        <p className="text-xs text-[#a0b0c8] text-center">
+          A unique tracking number (UCL-XXXXXXXXX) will be automatically generated.
+        </p>
+      )}
+    </form>
+  );
+}

@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Shipment {
+  id               String          @id @default(cuid())
+  trackingNumber   String          @unique
+  description      String
+  origin           String
+  originLat        Float
+  originLng        Float
+  destination      String
+  destinationLat   Float
+  destinationLng   Float
+  currentLocation  String
+  currentLat       Float
+  currentLng       Float
+  status           String          @default("PENDING")
+  cargoType        String          @default("General")
+  weight           String?
+  estimatedArrival String?
+  clientName       String?
+  clientEmail      String?
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  events           ShipmentEvent[]
+}
+
+model ShipmentEvent {
+  id          String   @id @default(cuid())
+  shipmentId  String
+  shipment    Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  location    String
+  lat         Float
+  lng         Float
+  description String
+  timestamp   DateTime @default(now())
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String?
+  phone     String?
+  service   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
