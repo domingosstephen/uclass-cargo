@@ -67,7 +67,7 @@ export default function ShipmentForm({ mode, shipment }: Props) {
   const [deleting, setDeleting] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
-  const [addEvent, setAddEvent] = useState(false);
+  const [addEvent, setAddEvent] = useState(mode === "edit");
   const [eventDescription, setEventDescription] = useState("");
   const [geoStatus, setGeoStatus] = useState<Record<string, "idle" | "loading" | "found" | "error">>({});
 
@@ -267,13 +267,14 @@ export default function ShipmentForm({ mode, shipment }: Props) {
 
         {mode === "edit" && (
           <div className="mt-4 pt-4 border-t border-[#e2e8f4]">
-            <label className="flex items-center gap-2 cursor-pointer mb-3">
-              <input type="checkbox" checked={addEvent} onChange={(e) => setAddEvent(e.target.checked)} className="w-4 h-4 rounded accent-[#0055ff]" />
-              <span className="text-sm text-[#4a6080]">Add a tracking event for this location update</span>
-            </label>
-            {addEvent && (
-              <input value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} placeholder="e.g. Cargo passed through Suez Canal inspection" className={fieldClass} />
-            )}
+            <p className="text-xs font-semibold text-[#0a1628] uppercase tracking-wider mb-3">Tracking Update Note</p>
+            <input
+              value={eventDescription}
+              onChange={(e) => setEventDescription(e.target.value)}
+              placeholder="e.g. Vessel departed Port of Genova — arrived at Port Said for transit"
+              className={fieldClass}
+            />
+            <p className="text-[10px] text-[#a0b0c8] mt-1.5">This note will appear in the client&apos;s shipment history timeline.</p>
           </div>
         )}
       </div>

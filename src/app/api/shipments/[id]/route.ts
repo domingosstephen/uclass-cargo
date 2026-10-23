@@ -62,8 +62,8 @@ export async function PUT(
       nextTransitPort: data.nextTransitPort,
     };
 
-    // Add an event if location changed
-    if (data.addEvent && data.eventDescription) {
+    // Add a tracking event whenever a note is provided
+    if (data.eventDescription && data.eventDescription.trim()) {
       await prisma.shipmentEvent.create({
         data: {
           shipmentId: id,

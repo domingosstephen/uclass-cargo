@@ -332,7 +332,7 @@ function TrackingContent() {
                 {/* Events timeline */}
                 {shipment.events.length > 0 && (
                   <div className="glass-card rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Journey History</h3>
+                    <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Journey History · {shipment.events.length} update{shipment.events.length !== 1 ? "s" : ""}</h3>
                     <div className="space-y-4">
                       {[...shipment.events].reverse().map((event, i) => (
                         <div key={event.id} className="flex gap-3">
