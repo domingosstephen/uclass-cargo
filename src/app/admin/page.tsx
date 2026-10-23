@@ -8,17 +8,24 @@ import { Package, Plus, Mail, TrendingUp } from "lucide-react";
 export default async function AdminDashboard() {
   await checkAdminAuth();
 
-  const [shipmentCount, pendingCount, inTransitCount, contactCount] = await Promise.all([
-    prisma.shipment.count(),
-    prisma.shipment.count({ where: { status: "PENDING" } }),
-    prisma.shipment.count({ where: { status: "IN_TRANSIT" } }),
-    prisma.contactSubmission.count({ where: { read: false } }),
-  ]);
+  let shipmentCount = 0, pendingCount = 0, inTransitCount = 0, contactCount = 0;
+  let recentShipments: Awaited<ReturnType<typeof prisma.shipment.findMany>> = [];
+  let dbError: string | null = null;
 
-  const recentShipments = await prisma.shipment.findMany({
-    take: 8,
-    orderBy: { updatedAt: "desc" },
-  });
+  try {
+    [shipmentCount, pendingCount, inTransitCount, contactCount] = await Promise.all([
+      prisma.shipment.count(),
+      prisma.shipment.count({ where: { status: "PENDING" } }),
+      prisma.shipment.count({ where: { status: "IN_TRANSIT" } }),
+      prisma.contactSubmission.count({ where: { read: false } }),
+    ]);
+    recentShipments = await prisma.shipment.findMany({
+      take: 8,
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (e) {
+    dbError = e instanceof Error ? e.message : "Database connection failed";
+  }
 
   const STATUS_COLORS: Record<string, string> = {
     PENDING: "status-pending", IN_TRANSIT: "status-in-transit", AT_PORT: "status-at-port",
@@ -47,6 +54,12 @@ export default async function AdminDashboard() {
       </header>
 
       <div className="container-custom py-8">
+        {dbError && (
+          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+            <strong>Database error:</strong> {dbError}
+            <p className="mt-1 text-xs text-red-500">Make sure DATABASE_URL is set in Vercel environment variables and the tables have been created.</p>
+          </div>
+        )}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { label: "Total Shipments", value: shipmentCount, icon: Package, color: "#0055ff" },
