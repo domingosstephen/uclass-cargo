@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Save, Trash2, MapPin, Loader2 } from "lucide-react";
+import { Save, Trash2, MapPin, Loader2, ChevronDown } from "lucide-react";
 
 const STATUS_OPTIONS = [
   { value: "PENDING", label: "Pending" },
@@ -58,6 +58,7 @@ export default function ShipmentForm({ mode, shipment }: Props) {
   const [error, setError] = useState("");
   const [addEvent, setAddEvent] = useState(false);
   const [eventDescription, setEventDescription] = useState("");
+  const [showCoords, setShowCoords] = useState(false);
 
   const [form, setForm] = useState({
     description:      shipment?.description      ?? "",
@@ -179,12 +180,6 @@ export default function ShipmentForm({ mode, shipment }: Props) {
 
       {/* Origin & Destination */}
       <div className={cardClass}>
-        {/* Hidden lat/lng — kept for map functionality */}
-        <input type="hidden" name="originLat" value={form.originLat} />
-        <input type="hidden" name="originLng" value={form.originLng} />
-        <input type="hidden" name="destinationLat" value={form.destinationLat} />
-        <input type="hidden" name="destinationLng" value={form.destinationLng} />
-
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <span className="w-2.5 h-2.5 rounded-full bg-[#00a050]" />Origin
         </h3>
@@ -196,18 +191,42 @@ export default function ShipmentForm({ mode, shipment }: Props) {
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <span className="w-2.5 h-2.5 rounded-full bg-[#cc2020]" />Destination
         </h3>
-        <div>
+        <div className="mb-6">
           <label className={labelClass}>City / Port *</label>
           <input name="destination" value={form.destination} onChange={handleChange} required placeholder="e.g. Shanghai, China" className={fieldClass} />
         </div>
+
+        {/* Map coordinates — expandable */}
+        <button type="button" onClick={() => setShowCoords(!showCoords)}
+          className="flex items-center gap-1.5 text-xs text-[#0055ff] hover:text-[#0044dd] transition-colors">
+          <ChevronDown size={13} className={`transition-transform ${showCoords ? "rotate-180" : ""}`} />
+          {showCoords ? "Hide" : "Set"} map coordinates (optional — enables live map for clients)
+        </button>
+
+        {showCoords && (
+          <div className="mt-4 pt-4 border-t border-[#e2e8f4] grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Origin Lat</label>
+              <input name="originLat" value={form.originLat} onChange={handleChange} type="number" step="any" placeholder="44.4056" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Origin Lng</label>
+              <input name="originLng" value={form.originLng} onChange={handleChange} type="number" step="any" placeholder="8.9463" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Destination Lat</label>
+              <input name="destinationLat" value={form.destinationLat} onChange={handleChange} type="number" step="any" placeholder="31.2304" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Destination Lng</label>
+              <input name="destinationLng" value={form.destinationLng} onChange={handleChange} type="number" step="any" placeholder="121.4737" className={fieldClass} />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Current Location */}
       <div className={cardClass}>
-        {/* Hidden lat/lng — kept for map functionality */}
-        <input type="hidden" name="currentLat" value={form.currentLat} />
-        <input type="hidden" name="currentLng" value={form.currentLng} />
-
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <MapPin size={14} className="text-[#0055ff]" />Current Location (Live Position)
         </h3>
@@ -215,6 +234,26 @@ export default function ShipmentForm({ mode, shipment }: Props) {
           <label className={labelClass}>Location Name *</label>
           <input name="currentLocation" value={form.currentLocation} onChange={handleChange} required placeholder="e.g. Suez Canal, Egypt" className={fieldClass} />
         </div>
+
+        {showCoords && (
+          <div className="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className={labelClass}>Current Lat</label>
+              <input name="currentLat" value={form.currentLat} onChange={handleChange} type="number" step="any" placeholder="30.5234" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Current Lng</label>
+              <input name="currentLng" value={form.currentLng} onChange={handleChange} type="number" step="any" placeholder="32.3455" className={fieldClass} />
+            </div>
+          </div>
+        )}
+
+        {!showCoords && (
+          <input type="hidden" name="currentLat" value={form.currentLat} />
+        )}
+        {!showCoords && (
+          <input type="hidden" name="currentLng" value={form.currentLng} />
+        )}
 
         {mode === "edit" && (
           <div className="mt-4 pt-4 border-t border-[#e2e8f4]">

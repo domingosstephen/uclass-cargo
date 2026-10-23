@@ -360,8 +360,8 @@ function TrackingContent() {
                 )}
               </div>
 
-              {/* Map */}
-              <div className="lg:col-span-3">
+              {/* Map — only shown when real coordinates are set */}
+              <div className="lg:col-span-3" style={{ display: (shipment.originLat === 0 && shipment.destinationLat === 0) ? "none" : undefined }}>
                 <div className="glass-card rounded-2xl overflow-hidden shadow-sm border border-[#e2e8f4]" style={{ height: "600px" }}>
                   <MapView
                     originLat={shipment.originLat} originLng={shipment.originLng} originName={shipment.origin}

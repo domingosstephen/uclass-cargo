@@ -41,7 +41,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center overflow-hidden bg-[#050f1e]">
+    <section className="relative min-h-screen flex flex-col items-center overflow-hidden bg-[#050f1e] pt-[88px]">
 
       {/* Background image slideshow */}
       <div className="absolute inset-0">
@@ -79,7 +79,7 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="container-custom relative z-10 flex-1 flex flex-col pt-40 pb-8">
+      <div className="container-custom relative z-10 flex-1 flex flex-col pt-12 pb-8">
         <motion.div
           variants={container}
           initial="hidden"
