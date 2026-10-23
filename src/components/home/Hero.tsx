@@ -79,7 +79,7 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="container-custom relative z-10 flex-1 flex flex-col justify-center pt-52 pb-0">
+      <div className="container-custom relative z-10 flex-1 flex flex-col pt-40 pb-8">
         <motion.div
           variants={container}
           initial="hidden"
