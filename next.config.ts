@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "dclogisticsbrasil.com" },
+      { protocol: "https", hostname: "www.dclogisticsbrasil.br.com" },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {
