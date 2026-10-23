@@ -46,6 +46,18 @@ export async function PUT(
       clientName: data.clientName,
       clientEmail: data.clientEmail,
       notes: data.notes,
+      supplierName: data.supplierName,
+      supplierAddress: data.supplierAddress,
+      supplierTel: data.supplierTel,
+      consigneeName: data.consigneeName,
+      consigneeAddress: data.consigneeAddress,
+      consigneeTel: data.consigneeTel,
+      productName: data.productName,
+      quantity: data.quantity,
+      dateOfLoading: data.dateOfLoading,
+      vesselName: data.vesselName,
+      vesselNumber: data.vesselNumber,
+      nextTransitPort: data.nextTransitPort,
     };
 
     // Add an event if location changed

@@ -56,6 +56,18 @@ interface Shipment {
   clientName: string | null;
   updatedAt: string;
   events: ShipmentEvent[];
+  supplierName: string | null;
+  supplierAddress: string | null;
+  supplierTel: string | null;
+  consigneeName: string | null;
+  consigneeAddress: string | null;
+  consigneeTel: string | null;
+  productName: string | null;
+  quantity: string | null;
+  dateOfLoading: string | null;
+  vesselName: string | null;
+  vesselNumber: string | null;
+  nextTransitPort: string | null;
 }
 
 function TrackingContent() {
@@ -246,6 +258,76 @@ function TrackingContent() {
                     </div>
                   </div>
                 </div>
+
+                {/* Supplier & Consignee */}
+                {(shipment.supplierName || shipment.consigneeName) && (
+                  <div className="glass-card rounded-2xl p-6 shadow-sm">
+                    <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Supplier &amp; Consignee</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {shipment.supplierName && (
+                        <div>
+                          <p className="text-[10px] font-semibold text-[#0055ff] uppercase tracking-wider mb-1.5">Supplier</p>
+                          <p className="text-xs text-[#0a1628] font-medium">{shipment.supplierName}</p>
+                          {shipment.supplierAddress && <p className="text-[10px] text-[#6a80a0] mt-0.5">{shipment.supplierAddress}</p>}
+                          {shipment.supplierTel && <p className="text-[10px] text-[#6a80a0]">{shipment.supplierTel}</p>}
+                        </div>
+                      )}
+                      {shipment.consigneeName && (
+                        <div>
+                          <p className="text-[10px] font-semibold text-[#0055ff] uppercase tracking-wider mb-1.5">Consignee</p>
+                          <p className="text-xs text-[#0a1628] font-medium">{shipment.consigneeName}</p>
+                          {shipment.consigneeAddress && <p className="text-[10px] text-[#6a80a0] mt-0.5">{shipment.consigneeAddress}</p>}
+                          {shipment.consigneeTel && <p className="text-[10px] text-[#6a80a0]">{shipment.consigneeTel}</p>}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Vessel & Product */}
+                {(shipment.vesselName || shipment.productName) && (
+                  <div className="glass-card rounded-2xl p-6 shadow-sm">
+                    <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Product &amp; Vessel</h3>
+                    <div className="space-y-2">
+                      {shipment.productName && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Product</span>
+                          <span className="text-xs text-[#0a1628] font-medium">{shipment.productName}</span>
+                        </div>
+                      )}
+                      {shipment.quantity && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Quantity</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.quantity}</span>
+                        </div>
+                      )}
+                      {shipment.dateOfLoading && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Date of Loading</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.dateOfLoading}</span>
+                        </div>
+                      )}
+                      {shipment.vesselName && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Vessel</span>
+                          <span className="text-xs text-[#0a1628] font-medium">{shipment.vesselName}</span>
+                        </div>
+                      )}
+                      {shipment.vesselNumber && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Voyage / IMO</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.vesselNumber}</span>
+                        </div>
+                      )}
+                      {shipment.nextTransitPort && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Next Transit Port</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.nextTransitPort}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Events timeline */}
                 {shipment.events.length > 0 && (

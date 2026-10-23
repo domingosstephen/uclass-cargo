@@ -39,6 +39,18 @@ interface ShipmentData {
   clientName: string | null;
   clientEmail: string | null;
   notes: string | null;
+  supplierName: string | null;
+  supplierAddress: string | null;
+  supplierTel: string | null;
+  consigneeName: string | null;
+  consigneeAddress: string | null;
+  consigneeTel: string | null;
+  productName: string | null;
+  quantity: string | null;
+  dateOfLoading: string | null;
+  vesselName: string | null;
+  vesselNumber: string | null;
+  nextTransitPort: string | null;
 }
 
 interface Props { mode: "create" | "edit"; shipment?: ShipmentData; }
@@ -70,6 +82,18 @@ export default function ShipmentForm({ mode, shipment }: Props) {
     clientName:       shipment?.clientName       ?? "",
     clientEmail:      shipment?.clientEmail      ?? "",
     notes:            shipment?.notes            ?? "",
+    supplierName:     shipment?.supplierName     ?? "",
+    supplierAddress:  shipment?.supplierAddress  ?? "",
+    supplierTel:      shipment?.supplierTel      ?? "",
+    consigneeName:    shipment?.consigneeName    ?? "",
+    consigneeAddress: shipment?.consigneeAddress ?? "",
+    consigneeTel:     shipment?.consigneeTel     ?? "",
+    productName:      shipment?.productName      ?? "",
+    quantity:         shipment?.quantity         ?? "",
+    dateOfLoading:    shipment?.dateOfLoading    ?? "",
+    vesselName:       shipment?.vesselName       ?? "",
+    vesselNumber:     shipment?.vesselNumber     ?? "",
+    nextTransitPort:  shipment?.nextTransitPort  ?? "",
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -230,6 +254,74 @@ export default function ShipmentForm({ mode, shipment }: Props) {
             )}
           </div>
         )}
+      </div>
+
+      {/* Supplier & Consignee */}
+      <div className={cardClass}>
+        <h3 className={sectionTitle}>Supplier & Consignee</h3>
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-[#0a1628] uppercase tracking-wider">Supplier</p>
+            <div>
+              <label className={labelClass}>Name</label>
+              <input name="supplierName" value={form.supplierName} onChange={handleChange} placeholder="Supplier company name" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Address</label>
+              <input name="supplierAddress" value={form.supplierAddress} onChange={handleChange} placeholder="Full address" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Tel</label>
+              <input name="supplierTel" value={form.supplierTel} onChange={handleChange} placeholder="+1 555 000 0000" className={fieldClass} />
+            </div>
+          </div>
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-[#0a1628] uppercase tracking-wider">Consignee</p>
+            <div>
+              <label className={labelClass}>Name</label>
+              <input name="consigneeName" value={form.consigneeName} onChange={handleChange} placeholder="Consignee company name" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Address</label>
+              <input name="consigneeAddress" value={form.consigneeAddress} onChange={handleChange} placeholder="Full address" className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Tel</label>
+              <input name="consigneeTel" value={form.consigneeTel} onChange={handleChange} placeholder="+1 555 000 0000" className={fieldClass} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Vessel & Transit */}
+      <div className={cardClass}>
+        <h3 className={sectionTitle}>Product & Vessel Details</h3>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Product Name</label>
+            <input name="productName" value={form.productName} onChange={handleChange} placeholder="e.g. Industrial machinery" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Quantity</label>
+            <input name="quantity" value={form.quantity} onChange={handleChange} placeholder="e.g. 12 units / 3 pallets" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Date of Loading</label>
+            <input name="dateOfLoading" value={form.dateOfLoading} onChange={handleChange} placeholder="e.g. 10 Jan 2025" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Vessel Name</label>
+            <input name="vesselName" value={form.vesselName} onChange={handleChange} placeholder="e.g. MSC OSCAR" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Vessel Number / Voyage</label>
+            <input name="vesselNumber" value={form.vesselNumber} onChange={handleChange} placeholder="e.g. 9ZE2345 / VOY 123" className={fieldClass} />
+          </div>
+          <div>
+            <label className={labelClass}>Next Transit Port</label>
+            <input name="nextTransitPort" value={form.nextTransitPort} onChange={handleChange} placeholder="e.g. Port Said, Egypt" className={fieldClass} />
+          </div>
+        </div>
       </div>
 
       {/* Client Info */}

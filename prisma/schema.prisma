@@ -29,6 +29,18 @@ model Shipment {
   clientName       String?
   clientEmail      String?
   notes            String?
+  supplierName     String?
+  supplierAddress  String?
+  supplierTel      String?
+  consigneeName    String?
+  consigneeAddress String?
+  consigneeTel     String?
+  productName      String?
+  quantity         String?
+  dateOfLoading    String?
+  vesselName       String?
+  vesselNumber     String?
+  nextTransitPort  String?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   events           ShipmentEvent[]

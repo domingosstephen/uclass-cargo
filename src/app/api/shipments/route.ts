@@ -51,6 +51,18 @@ export async function POST(req: NextRequest) {
         clientName: data.clientName || null,
         clientEmail: data.clientEmail || null,
         notes: data.notes || null,
+        supplierName: data.supplierName || null,
+        supplierAddress: data.supplierAddress || null,
+        supplierTel: data.supplierTel || null,
+        consigneeName: data.consigneeName || null,
+        consigneeAddress: data.consigneeAddress || null,
+        consigneeTel: data.consigneeTel || null,
+        productName: data.productName || null,
+        quantity: data.quantity || null,
+        dateOfLoading: data.dateOfLoading || null,
+        vesselName: data.vesselName || null,
+        vesselNumber: data.vesselNumber || null,
+        nextTransitPort: data.nextTransitPort || null,
         events: {
           create: {
             location: data.origin,
