@@ -3,7 +3,8 @@ import { checkAdminAuth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import AdminLogout from "@/components/admin/AdminLogout";
-import { Package, Plus, Mail, TrendingUp } from "lucide-react";
+import { Package, Plus, Mail, TrendingUp, Search } from "lucide-react";
+import DeleteShipmentButton from "@/components/admin/DeleteShipmentButton";
 
 export default async function AdminDashboard() {
   await checkAdminAuth();
@@ -106,7 +107,15 @@ export default async function AdminDashboard() {
                     </td>
                     <td className="px-6 py-4 text-[#a0b0c8] text-xs">{new Date(s.updatedAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4">
-                      <Link href={`/admin/shipments/${s.id}`} className="text-xs text-[#0055ff] hover:underline">Edit</Link>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/admin/shipments/${s.id}`}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#0055ff] border border-[#0055ff]/20 hover:bg-[#0055ff]/5 transition-colors bg-white"
+                        >
+                          <Search size={12} />Edit
+                        </Link>
+                        <DeleteShipmentButton id={s.id} trackingNumber={s.trackingNumber} />
+                      </div>
                     </td>
                   </tr>
                 ))}
