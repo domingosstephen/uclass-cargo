@@ -30,20 +30,23 @@ export async function POST(req: NextRequest) {
   const rand = Math.floor(Math.random() * 90000) + 10000;
   const trackingNumber = `UCL-${year}${rand}`;
 
+  const parseLat = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+  const parseLng = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+
   try {
     const shipment = await prisma.shipment.create({
       data: {
         trackingNumber,
         description: data.description,
         origin: data.origin,
-        originLat: parseFloat(data.originLat),
-        originLng: parseFloat(data.originLng),
+        originLat: parseLat(data.originLat),
+        originLng: parseLng(data.originLng),
         destination: data.destination,
-        destinationLat: parseFloat(data.destinationLat),
-        destinationLng: parseFloat(data.destinationLng),
+        destinationLat: parseLat(data.destinationLat),
+        destinationLng: parseLng(data.destinationLng),
         currentLocation: data.origin,
-        currentLat: parseFloat(data.originLat),
-        currentLng: parseFloat(data.originLng),
+        currentLat: parseLat(data.originLat),
+        currentLng: parseLng(data.originLng),
         status: data.status || "PENDING",
         cargoType: data.cargoType || "General",
         weight: data.weight || null,
@@ -66,8 +69,8 @@ export async function POST(req: NextRequest) {
         events: {
           create: {
             location: data.origin,
-            lat: parseFloat(data.originLat),
-            lng: parseFloat(data.originLng),
+            lat: parseLat(data.originLat),
+            lng: parseLng(data.originLng),
             description: "Shipment registered and awaiting pickup",
           },
         },

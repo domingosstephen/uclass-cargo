@@ -33,12 +33,14 @@ export async function PUT(
   const { id } = await params;
   const data = await req.json();
 
+  const parseCoord = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+
   try {
     const updateData: Record<string, unknown> = {
       status: data.status,
       currentLocation: data.currentLocation,
-      currentLat: parseFloat(data.currentLat),
-      currentLng: parseFloat(data.currentLng),
+      currentLat: parseCoord(data.currentLat),
+      currentLng: parseCoord(data.currentLng),
       description: data.description,
       cargoType: data.cargoType,
       weight: data.weight,
@@ -66,8 +68,8 @@ export async function PUT(
         data: {
           shipmentId: id,
           location: data.currentLocation,
-          lat: parseFloat(data.currentLat),
-          lng: parseFloat(data.currentLng),
+          lat: parseCoord(data.currentLat),
+          lng: parseCoord(data.currentLng),
           description: data.eventDescription,
         },
       });
