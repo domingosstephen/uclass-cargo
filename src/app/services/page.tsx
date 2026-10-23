@@ -120,7 +120,7 @@ function ServiceCard({ service, idx }: { service: typeof services[0]; idx: numbe
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-white">
-      <section className="pt-32 pb-20 relative overflow-hidden bg-gradient-to-b from-[#f0f6ff] to-white">
+      <section className="pt-40 pb-20 relative overflow-hidden bg-gradient-to-b from-[#f0f6ff] to-white">
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(rgba(0,85,255,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
         <div className="absolute top-1/3 -right-32 w-96 h-96 bg-[#0055ff]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container-custom relative z-10">

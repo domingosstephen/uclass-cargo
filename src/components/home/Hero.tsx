@@ -49,7 +49,7 @@ export default function Hero() {
         <div className="absolute left-[30%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/3 to-transparent" />
       </div>
 
-      <div className="container-custom relative z-10 flex-1 flex flex-col justify-center pt-40 pb-0">
+      <div className="container-custom relative z-10 flex-1 flex flex-col justify-center pt-52 pb-0">
         <motion.div
           variants={container}
           initial="hidden"
@@ -69,7 +69,7 @@ export default function Hero() {
           {/* Main heading */}
           <motion.h1
             variants={item}
-            className="text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-black leading-[1.02] mb-8 tracking-tight"
+            className="text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.08] mb-8 tracking-wide"
           >
             <span className="text-white">Delivering </span>
             <span
