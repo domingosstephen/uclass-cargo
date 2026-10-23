@@ -54,9 +54,9 @@ export default function Hero() {
             <img src={src} alt="" className="w-full h-full object-cover" aria-hidden="true" />
           </div>
         ))}
-        {/* Dark overlay so text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050f1e]/90 via-[#050f1e]/75 to-[#050f1e]/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050f1e]/40 via-transparent to-[#050f1e]/60" />
+        {/* Light scrim — just enough contrast for text, images stay bright */}
+        <div className="absolute inset-0 bg-[#050f1e]/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050f1e]/20 via-transparent to-[#050f1e]/50" />
       </div>
 
       {/* Atmospheric glow layers */}
@@ -90,7 +90,7 @@ export default function Hero() {
           <motion.div variants={item} className="flex items-center gap-3 mb-8">
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm">
               <div className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
-              <span className="text-xs font-semibold tracking-[0.2em] text-white/55 uppercase">
+              <span className="text-xs font-semibold tracking-[0.2em] text-white/80 uppercase">
                 Genova, Italy · Est. 2008
               </span>
             </div>
@@ -99,7 +99,8 @@ export default function Hero() {
           {/* Main heading */}
           <motion.h1
             variants={item}
-            className="text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.08] mb-8 tracking-wide"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 tracking-wide"
+            style={{ textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)" }}
           >
             <span className="text-white">Delivering </span>
             <span
@@ -129,7 +130,8 @@ export default function Hero() {
           {/* Sub */}
           <motion.p
             variants={item}
-            className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mb-12 font-light"
+            className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mb-10 font-light"
+            style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
           >
             End-to-end freight solutions by sea, air, and land.
             Track your shipment in real time and trust your cargo to
@@ -161,8 +163,8 @@ export default function Hero() {
               { icon: Globe2, label: "50+ Countries" },
               { icon: Shield, label: "Full Cargo Insurance" },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 text-sm text-white/40">
-                <Icon size={15} className="text-white/25" />
+              <div key={label} className="flex items-center gap-2 text-sm text-white/75" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>
+                <Icon size={15} className="text-white/60" />
                 {label}
               </div>
             ))}
