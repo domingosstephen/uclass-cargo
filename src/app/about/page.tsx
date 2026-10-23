@@ -32,7 +32,8 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative hero-bg grid-bg pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-b from-[#f0f6ff] to-white">
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(rgba(0,85,255,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
         <div className="absolute top-1/3 -left-32 w-96 h-96 bg-[#0055ff]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="container-custom relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl">
@@ -47,7 +48,7 @@ export default function AboutPage() {
             </p>
           </motion.div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent" />
       </section>
 
       <div className="container-custom py-16 space-y-24">
