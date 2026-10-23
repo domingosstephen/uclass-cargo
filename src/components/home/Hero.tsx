@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-[#0055ff]/6 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-[#0088cc]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="container-custom relative z-10 pt-28 pb-16">
+      <div className="container-custom relative z-10 pt-44 pb-16">
         <motion.div
           variants={container}
           initial="hidden"
@@ -36,7 +36,7 @@ export default function Hero() {
           className="max-w-4xl"
         >
           {/* Badge */}
-          <motion.div variants={item} className="flex mb-6">
+          <motion.div variants={item} className="flex mb-8">
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#0055ff]/20 bg-[#0055ff]/5 text-xs font-semibold tracking-widest text-[#0055ff] uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-[#0055ff] animate-pulse" />
               Global Cargo &amp; Logistics — Genova, Italy
