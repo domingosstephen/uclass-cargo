@@ -31,16 +31,20 @@ export default function Navigation() {
 
   if (pathname?.startsWith("/admin")) return null;
 
+  const isDarkHero = pathname === "/" && !scrolled;
+
   return (
     <>
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" as const }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? "glass-nav shadow-sm"
-            : "bg-white/70 backdrop-blur-sm border-b border-transparent"
+            : isDarkHero
+            ? "bg-transparent border-b border-white/5"
+            : "bg-white/90 backdrop-blur-md border-b border-[#e2e8f4]/60"
         }`}
       >
         <div className="container-custom">
@@ -51,10 +55,10 @@ export default function Navigation() {
                 <Anchor className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-[13px] font-bold tracking-[0.2em] text-[#0055ff] uppercase">
+                <span className={`text-[13px] font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${isDarkHero ? "text-white" : "text-[#0055ff]"}`}>
                   U-Class
                 </span>
-                <span className="text-[11px] tracking-[0.15em] text-[#6a80a0] uppercase">
+                <span className={`text-[11px] tracking-[0.15em] uppercase transition-colors duration-300 ${isDarkHero ? "text-white/50" : "text-[#6a80a0]"}`}>
                   Cargo Logistics
                 </span>
               </div>
@@ -70,14 +74,16 @@ export default function Navigation() {
                     href={link.href}
                     className={`relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 rounded-lg ${
                       isActive
-                        ? "text-[#0055ff]"
+                        ? isDarkHero ? "text-white" : "text-[#0055ff]"
+                        : isDarkHero
+                        ? "text-white/70 hover:text-white"
                         : "text-[#3a5070] hover:text-[#0a1628]"
                     }`}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="nav-pill"
-                        className="absolute inset-0 bg-[#0055ff]/8 rounded-lg"
+                        className={`absolute inset-0 rounded-lg ${isDarkHero ? "bg-white/10" : "bg-[#0055ff]/8"}`}
                         transition={{ type: "spring", duration: 0.4 }}
                       />
                     )}
@@ -91,13 +97,21 @@ export default function Navigation() {
             <div className="flex items-center gap-3">
               <Link
                 href="/tracking"
-                className="hidden md:flex btn-primary px-5 py-2.5 rounded-lg text-sm font-semibold"
+                className={`hidden md:flex px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                  isDarkHero
+                    ? "border border-white/25 text-white hover:bg-white/10"
+                    : "btn-primary"
+                }`}
               >
                 Track Shipment
               </Link>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden w-10 h-10 rounded-lg border border-[#e2e8f4] bg-white flex items-center justify-center text-[#3a5070] hover:text-[#0a1628] transition-colors shadow-sm"
+                className={`lg:hidden w-10 h-10 rounded-lg border flex items-center justify-center transition-colors ${
+                  isDarkHero
+                    ? "border-white/20 bg-white/5 text-white/80 hover:text-white"
+                    : "border-[#e2e8f4] bg-white text-[#3a5070] hover:text-[#0a1628] shadow-sm"
+                }`}
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}

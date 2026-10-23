@@ -129,21 +129,21 @@ body {
   border-bottom: 1px solid rgba(0, 40, 120, 0.08);
 }
 
-/* Hero background */
+/* Hero background - dark dramatic deep navy */
 .hero-bg {
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(0, 85, 255, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(0, 136, 204, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(184, 148, 30, 0.04) 0%, transparent 50%),
-    linear-gradient(180deg, #f0f6ff 0%, #ffffff 50%, #f8fafc 100%);
+    radial-gradient(ellipse 130% 90% at 15% 40%, rgba(0, 85, 255, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 90% 70%, rgba(0, 136, 204, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 10%, rgba(0, 60, 180, 0.15) 0%, transparent 50%),
+    linear-gradient(160deg, #050f1e 0%, #071828 30%, #0a1f38 60%, #060e1c 100%);
 }
 
-/* Grid pattern overlay */
+/* Grid pattern overlay - for dark hero */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0, 85, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 85, 255, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
 }
 
 /* Dark section (footer + select sections) */
