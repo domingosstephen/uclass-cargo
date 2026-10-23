@@ -23,7 +23,18 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center hero-bg grid-bg overflow-hidden">
+    <section
+      className="relative min-h-screen flex flex-col items-center overflow-hidden"
+      style={{
+        background: "linear-gradient(160deg, #050f1e 0%, #071828 30%, #0a1f38 60%, #060e1c 100%)",
+        backgroundImage: [
+          "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)",
+          "linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
+          "linear-gradient(160deg, #050f1e 0%, #071828 30%, #0a1f38 60%, #060e1c 100%)",
+        ].join(", "),
+        backgroundSize: "72px 72px, 72px 72px, 100% 100%",
+      }}
+    >
 
       {/* Atmospheric glow layers */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">

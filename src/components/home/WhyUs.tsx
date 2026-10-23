@@ -46,9 +46,7 @@ export default function WhyUs() {
     <section
       ref={ref}
       className="py-28 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(160deg, #061220 0%, #081a30 40%, #0a1f38 70%, #060e1c 100%)",
-      }}
+      style={{ background: "linear-gradient(160deg, #061220 0%, #081a30 40%, #0a1f38 70%, #060e1c 100%)" }}
     >
       {/* Atmospheric glow */}
       <div className="absolute inset-0 pointer-events-none">

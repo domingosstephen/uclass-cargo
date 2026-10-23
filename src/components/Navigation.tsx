@@ -39,13 +39,14 @@ export default function Navigation() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" as const }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+        style={
           scrolled
-            ? "glass-nav shadow-sm"
+            ? { background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(0,40,120,0.08)", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }
             : isDarkHero
-            ? "bg-transparent border-b border-white/5"
-            : "bg-white/90 backdrop-blur-md border-b border-[#e2e8f4]/60"
-        }`}
+            ? { background: "rgba(5,15,30,0.5)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }
+            : { background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid #e2e8f4" }
+        }
       >
         <div className="container-custom">
           <div className="flex items-center justify-between h-18 py-4">
