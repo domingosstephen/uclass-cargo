@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Anchor, MapPin, Award, Users, Globe2, TrendingUp, Star, Quote } from "lucide-react";
-import Image from "next/image";
 
 const values = [
   { icon: Award, title: "Excellence", desc: "Every shipment is handled with the highest standards of professionalism and care." },
@@ -40,22 +39,10 @@ const reviews = [
 ];
 
 const partnerImages = [
-  {
-    src: "https://dclogisticsbrasil.com/wp-content/uploads/2023/11/quem-somos-dc-logistics-brasil-v01.jpg",
-    alt: "DC Logistics Brasil operations",
-  },
-  {
-    src: "https://www.dclogisticsbrasil.br.com/cargo-loading.jpg",
-    alt: "Cargo loading operations",
-  },
-  {
-    src: "https://www.dclogisticsbrasil.br.com/warehouse.jpg",
-    alt: "Warehouse operations",
-  },
-  {
-    src: "https://www.dclogisticsbrasil.br.com/service-sea.jpg",
-    alt: "Sea freight services",
-  },
+  { src: "/images/dc-cargo-loading.jpg", alt: "Cargo loading operations" },
+  { src: "/images/dc-warehouse.jpg", alt: "Warehouse operations" },
+  { src: "/images/dc-service-sea.jpg", alt: "Sea freight services" },
+  { src: "/images/dc-service-road.jpg", alt: "Road freight services" },
 ];
 
 function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -105,18 +92,23 @@ export default function AboutPage() {
                 <p>Today, U-Class is synonymous with precision, transparency, and excellence — qualities that have earned us the trust of Fortune 500 companies and ambitious SMEs alike.</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { num: "2009", label: "Year Founded" },
-                { num: "50+", label: "Countries" },
-                { num: "12K+", label: "Shipments/Year" },
-                { num: "98%", label: "Client Retention" },
-              ].map(({ num, label }) => (
-                <div key={label} className="glass-card rounded-2xl p-6 text-center shadow-sm">
-                  <div className="text-3xl font-bold text-gradient-blue mb-2">{num}</div>
-                  <div className="text-xs text-[#6a80a0] uppercase tracking-wider">{label}</div>
-                </div>
-              ))}
+            <div className="flex flex-col gap-4">
+              <div className="relative rounded-2xl overflow-hidden aspect-video shadow-sm">
+                <img src="/images/dc-operations.jpg" alt="DC Logistics Brasil operations" className="w-full h-full object-cover" />
+              </div>
+              <div className="grid grid-cols-4 gap-3">
+                {[
+                  { num: "2009", label: "Founded" },
+                  { num: "50+", label: "Countries" },
+                  { num: "12K+", label: "Shipments" },
+                  { num: "98%", label: "Retention" },
+                ].map(({ num, label }) => (
+                  <div key={label} className="glass-card rounded-xl p-3 text-center shadow-sm">
+                    <div className="text-xl font-bold text-gradient-blue mb-1">{num}</div>
+                    <div className="text-[10px] text-[#6a80a0] uppercase tracking-wider">{label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Section>
