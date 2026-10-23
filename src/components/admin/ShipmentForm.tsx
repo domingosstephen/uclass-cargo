@@ -14,11 +14,6 @@ const STATUS_OPTIONS = [
   { value: "DELAYED", label: "Delayed" },
 ];
 
-const CARGO_TYPES = [
-  "General Cargo", "Electronics", "Chemicals", "Pharmaceuticals",
-  "Automotive", "Machinery", "Food & Beverage", "Textiles", "Project Cargo",
-];
-
 interface ShipmentData {
   id: string;
   trackingNumber: string;
@@ -76,7 +71,7 @@ export default function ShipmentForm({ mode, shipment }: Props) {
     currentLat:       String(shipment?.currentLat      ?? ""),
     currentLng:       String(shipment?.currentLng      ?? ""),
     status:           shipment?.status           ?? "PENDING",
-    cargoType:        shipment?.cargoType        ?? "General Cargo",
+    cargoType:        shipment?.cargoType        ?? "",
     weight:           shipment?.weight           ?? "",
     estimatedArrival: shipment?.estimatedArrival ?? "",
     clientName:       shipment?.clientName       ?? "",
@@ -155,17 +150,15 @@ export default function ShipmentForm({ mode, shipment }: Props) {
 
       {/* Cargo Info */}
       <div className={cardClass}>
-        <h3 className={sectionTitle}>Cargo Information</h3>
+        <h3 className={sectionTitle}>Shipment Information</h3>
         <div className="grid sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label className={labelClass}>Description *</label>
             <input name="description" value={form.description} onChange={handleChange} required placeholder="e.g. Industrial machinery components" className={fieldClass} />
           </div>
           <div>
-            <label className={labelClass}>Cargo Type</label>
-            <select name="cargoType" value={form.cargoType} onChange={handleChange} className={fieldClass}>
-              {CARGO_TYPES.map((t) => <option key={t}>{t}</option>)}
-            </select>
+            <label className={labelClass}>Product</label>
+            <input name="cargoType" value={form.cargoType} onChange={handleChange} placeholder="e.g. Electronics, Machinery, Textiles…" className={fieldClass} />
           </div>
           <div>
             <label className={labelClass}>Weight</label>
@@ -184,63 +177,43 @@ export default function ShipmentForm({ mode, shipment }: Props) {
         </div>
       </div>
 
-      {/* Origin */}
+      {/* Origin & Destination */}
       <div className={cardClass}>
+        {/* Hidden lat/lng — kept for map functionality */}
+        <input type="hidden" name="originLat" value={form.originLat} />
+        <input type="hidden" name="originLng" value={form.originLng} />
+        <input type="hidden" name="destinationLat" value={form.destinationLat} />
+        <input type="hidden" name="destinationLng" value={form.destinationLng} />
+
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <span className="w-2.5 h-2.5 rounded-full bg-[#00a050]" />Origin
         </h3>
-        <div className="grid sm:grid-cols-3 gap-4 mb-6">
-          <div className="sm:col-span-1">
-            <label className={labelClass}>City / Port *</label>
-            <input name="origin" value={form.origin} onChange={handleChange} required placeholder="e.g. Genova, Italy" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Latitude *</label>
-            <input name="originLat" value={form.originLat} onChange={handleChange} required type="number" step="any" placeholder="44.4056" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Longitude *</label>
-            <input name="originLng" value={form.originLng} onChange={handleChange} required type="number" step="any" placeholder="8.9463" className={fieldClass} />
-          </div>
+        <div className="mb-6">
+          <label className={labelClass}>City / Port *</label>
+          <input name="origin" value={form.origin} onChange={handleChange} required placeholder="e.g. Genova, Italy" className={fieldClass} />
         </div>
 
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <span className="w-2.5 h-2.5 rounded-full bg-[#cc2020]" />Destination
         </h3>
-        <div className="grid sm:grid-cols-3 gap-4">
-          <div className="sm:col-span-1">
-            <label className={labelClass}>City / Port *</label>
-            <input name="destination" value={form.destination} onChange={handleChange} required placeholder="e.g. Shanghai, China" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Latitude *</label>
-            <input name="destinationLat" value={form.destinationLat} onChange={handleChange} required type="number" step="any" placeholder="31.2304" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Longitude *</label>
-            <input name="destinationLng" value={form.destinationLng} onChange={handleChange} required type="number" step="any" placeholder="121.4737" className={fieldClass} />
-          </div>
+        <div>
+          <label className={labelClass}>City / Port *</label>
+          <input name="destination" value={form.destination} onChange={handleChange} required placeholder="e.g. Shanghai, China" className={fieldClass} />
         </div>
       </div>
 
       {/* Current Location */}
       <div className={cardClass}>
+        {/* Hidden lat/lng — kept for map functionality */}
+        <input type="hidden" name="currentLat" value={form.currentLat} />
+        <input type="hidden" name="currentLng" value={form.currentLng} />
+
         <h3 className={`${sectionTitle} flex items-center gap-2`}>
           <MapPin size={14} className="text-[#0055ff]" />Current Location (Live Position)
         </h3>
-        <div className="grid sm:grid-cols-3 gap-4 mb-4">
-          <div className="sm:col-span-1">
-            <label className={labelClass}>Location Name *</label>
-            <input name="currentLocation" value={form.currentLocation} onChange={handleChange} required placeholder="e.g. Suez Canal, Egypt" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Latitude *</label>
-            <input name="currentLat" value={form.currentLat} onChange={handleChange} required type="number" step="any" placeholder="30.5234" className={fieldClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Longitude *</label>
-            <input name="currentLng" value={form.currentLng} onChange={handleChange} required type="number" step="any" placeholder="32.3455" className={fieldClass} />
-          </div>
+        <div className="mb-4">
+          <label className={labelClass}>Location Name *</label>
+          <input name="currentLocation" value={form.currentLocation} onChange={handleChange} required placeholder="e.g. Suez Canal, Egypt" className={fieldClass} />
         </div>
 
         {mode === "edit" && (

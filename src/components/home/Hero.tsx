@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Search, Ship, Globe2, Shield, ChevronDown } from "lucide-react";
@@ -21,20 +22,42 @@ const stats = [
   { value: "24/7", label: "Live Support" },
 ];
 
+const heroImages = [
+  "/images/dc-service-sea.jpg",
+  "/images/dc-cargo-loading.jpg",
+  "/images/dc-warehouse.jpg",
+  "/images/dc-service-road.jpg",
+  "/images/dc-operations.jpg",
+];
+
 export default function Hero() {
+  const [activeImg, setActiveImg] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveImg((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section
-      className="relative min-h-screen flex flex-col items-center overflow-hidden"
-      style={{
-        background: "linear-gradient(160deg, #050f1e 0%, #071828 30%, #0a1f38 60%, #060e1c 100%)",
-        backgroundImage: [
-          "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)",
-          "linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-          "linear-gradient(160deg, #050f1e 0%, #071828 30%, #0a1f38 60%, #060e1c 100%)",
-        ].join(", "),
-        backgroundSize: "72px 72px, 72px 72px, 100% 100%",
-      }}
-    >
+    <section className="relative min-h-screen flex flex-col items-center overflow-hidden bg-[#050f1e]">
+
+      {/* Background image slideshow */}
+      <div className="absolute inset-0">
+        {heroImages.map((src, i) => (
+          <div
+            key={src}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: i === activeImg ? 1 : 0 }}
+          >
+            <img src={src} alt="" className="w-full h-full object-cover" aria-hidden="true" />
+          </div>
+        ))}
+        {/* Dark overlay so text stays readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050f1e]/90 via-[#050f1e]/75 to-[#050f1e]/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050f1e]/40 via-transparent to-[#050f1e]/60" />
+      </div>
 
       {/* Atmospheric glow layers */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -42,11 +65,18 @@ export default function Hero() {
         <div className="absolute top-1/2 right-0 w-[500px] h-[400px] bg-[#0088cc]/8 rounded-full blur-[100px]" />
       </div>
 
-      {/* Decorative lines — nautical chart feel */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[38%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/6 to-transparent" />
-        <div className="absolute top-[62%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/4 to-transparent" />
-        <div className="absolute left-[30%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/3 to-transparent" />
+      {/* Slide indicator dots */}
+      <div className="absolute bottom-32 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        {heroImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveImg(i)}
+            className="transition-all duration-300"
+            aria-label={`Slide ${i + 1}`}
+          >
+            <div className={`rounded-full transition-all duration-300 ${i === activeImg ? "w-6 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/35"}`} />
+          </button>
+        ))}
       </div>
 
       <div className="container-custom relative z-10 flex-1 flex flex-col justify-center pt-52 pb-0">
