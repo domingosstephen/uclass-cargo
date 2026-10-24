@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, MapPin, CheckCircle2,
+  Search, MapPin, Clock, CheckCircle2,
   AlertCircle, Loader2, Ship,
 } from "lucide-react";
 
