@@ -78,33 +78,43 @@ function FitBounds({ bounds }: { bounds: [number, number][] }) {
   return null;
 }
 
+const isValid = (lat: number, lng: number) => lat !== 0 || lng !== 0;
+
 export default function MapView({
   originLat, originLng, originName,
   destinationLat, destinationLng, destinationName,
   currentLat, currentLng, currentLocation,
   events,
 }: MapViewProps) {
+  const hasOrigin      = isValid(originLat, originLng);
+  const hasDestination = isValid(destinationLat, destinationLng);
+  const hasCurrent     = isValid(currentLat, currentLng);
+
+  // Build route from points that have real coordinates
   const routePoints: [number, number][] = [
-    [originLat, originLng],
-    ...events.map((e): [number, number] => [e.lat, e.lng]),
-    [currentLat, currentLng],
+    ...(hasOrigin ? [[originLat, originLng] as [number, number]] : []),
+    ...events.filter((e) => isValid(e.lat, e.lng)).map((e): [number, number] => [e.lat, e.lng]),
+    ...(hasCurrent ? [[currentLat, currentLng] as [number, number]] : []),
   ];
 
-  const planPoints: [number, number][] = [
-    [currentLat, currentLng],
-    [destinationLat, destinationLng],
+  const planPoints: [number, number][] = hasCurrent && hasDestination
+    ? [[currentLat, currentLng], [destinationLat, destinationLng]]
+    : [];
+
+  const boundsPoints: [number, number][] = [
+    ...(hasOrigin      ? [[originLat, originLng] as [number, number]]      : []),
+    ...(hasDestination ? [[destinationLat, destinationLng] as [number, number]] : []),
+    ...(hasCurrent     ? [[currentLat, currentLng] as [number, number]]     : []),
   ];
 
-  const allBounds: [number, number][] = [
-    [originLat, originLng],
-    [destinationLat, destinationLng],
-    [currentLat, currentLng],
-  ];
+  // Default center: use first valid point, or world overview
+  const center: [number, number] = boundsPoints[0] ?? [20, 0];
+  const zoom = boundsPoints.length > 0 ? 4 : 2;
 
   return (
     <MapContainer
-      center={[currentLat, currentLng]}
-      zoom={5}
+      center={center}
+      zoom={zoom}
       style={{ height: "100%", width: "100%", borderRadius: "inherit" }}
       zoomControl
     >
@@ -112,28 +122,36 @@ export default function MapView({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
-      <FitBounds bounds={allBounds} />
+      {boundsPoints.length > 1 && <FitBounds bounds={boundsPoints} />}
 
-      <Polyline positions={routePoints} pathOptions={{ color: "#0055ff", weight: 2.5, opacity: 0.8 }} />
-      <Polyline positions={planPoints} pathOptions={{ color: "#a0b0c8", weight: 2, opacity: 0.6, dashArray: "8 8" }} />
+      {routePoints.length > 1 && (
+        <Polyline positions={routePoints} pathOptions={{ color: "#0055ff", weight: 2.5, opacity: 0.8 }} />
+      )}
+      {planPoints.length > 1 && (
+        <Polyline positions={planPoints} pathOptions={{ color: "#a0b0c8", weight: 2, opacity: 0.6, dashArray: "8 8" }} />
+      )}
 
-      <Marker position={[originLat, originLng]} icon={originIcon}>
-        <Popup>
-          <div style={{ fontSize: "12px" }}>
-            <strong style={{ color: "#00a050" }}>Origin</strong><br />{originName}
-          </div>
-        </Popup>
-      </Marker>
+      {hasOrigin && (
+        <Marker position={[originLat, originLng]} icon={originIcon}>
+          <Popup>
+            <div style={{ fontSize: "12px" }}>
+              <strong style={{ color: "#00a050" }}>Origin</strong><br />{originName}
+            </div>
+          </Popup>
+        </Marker>
+      )}
 
-      <Marker position={[destinationLat, destinationLng]} icon={destinationIcon}>
-        <Popup>
-          <div style={{ fontSize: "12px" }}>
-            <strong style={{ color: "#cc2020" }}>Destination</strong><br />{destinationName}
-          </div>
-        </Popup>
-      </Marker>
+      {hasDestination && (
+        <Marker position={[destinationLat, destinationLng]} icon={destinationIcon}>
+          <Popup>
+            <div style={{ fontSize: "12px" }}>
+              <strong style={{ color: "#cc2020" }}>Destination</strong><br />{destinationName}
+            </div>
+          </Popup>
+        </Marker>
+      )}
 
-      {events.slice(1, -1).map((event) => (
+      {events.filter((e) => isValid(e.lat, e.lng)).slice(1, -1).map((event) => (
         <Marker key={event.id} position={[event.lat, event.lng]} icon={eventIcon}>
           <Popup>
             <div style={{ fontSize: "12px" }}>
@@ -145,14 +163,16 @@ export default function MapView({
         </Marker>
       ))}
 
-      <Marker position={[currentLat, currentLng]} icon={currentIcon}>
-        <Popup>
-          <div style={{ fontSize: "12px" }}>
-            <div style={{ color: "#0055ff", fontWeight: 600 }}>Current Location</div>
-            <div style={{ color: "#333", marginTop: 2 }}>{currentLocation}</div>
-          </div>
-        </Popup>
-      </Marker>
+      {hasCurrent && (
+        <Marker position={[currentLat, currentLng]} icon={currentIcon}>
+          <Popup>
+            <div style={{ fontSize: "12px" }}>
+              <div style={{ color: "#0055ff", fontWeight: 600 }}>Current Location</div>
+              <div style={{ color: "#333", marginTop: 2 }}>{currentLocation}</div>
+            </div>
+          </Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
 }
