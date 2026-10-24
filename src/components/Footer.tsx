@@ -120,9 +120,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:uclasscargologistics@ukr.net" className="flex items-center gap-3 text-sm text-white/40 hover:text-white transition-colors break-all">
+                <a href="mailto:contact@uclasscargo.com" className="flex items-center gap-3 text-sm text-white/40 hover:text-white transition-colors break-all">
                   <Mail size={16} className="text-[#0055ff] shrink-0" />
-                  uclasscargologistics@ukr.net
+                  contact@uclasscargo.com
                 </a>
               </li>
             </ul>

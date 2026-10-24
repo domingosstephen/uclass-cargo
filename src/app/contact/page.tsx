@@ -69,7 +69,7 @@ export default function ContactPage() {
                 {[
                   { icon: MapPin, label: "Office Address", content: <span className="text-sm text-[#0a1628] leading-relaxed">Via Dante, 2<br />16121 Genova GE, Italy</span> },
                   { icon: Phone, label: "Phone", content: <a href="tel:+393508405884" className="text-sm text-[#0a1628] hover:text-[#0055ff] transition-colors">+39 350 840 5884</a> },
-                  { icon: Mail, label: "Email", content: <a href="mailto:uclasscargologistics@ukr.net" className="text-sm text-[#0a1628] hover:text-[#0055ff] transition-colors break-all">uclasscargologistics@ukr.net</a> },
+                  { icon: Mail, label: "Email", content: <a href="mailto:contact@uclasscargo.com" className="text-sm text-[#0a1628] hover:text-[#0055ff] transition-colors break-all">contact@uclasscargo.com</a> },
                   { icon: Clock, label: "Business Hours", content: <p className="text-sm text-[#0a1628]">Mon–Fri: 8:00–18:00 CET<br /><span className="text-xs text-[#6a80a0]">Emergency line: 24/7</span></p> },
                 ].map(({ icon: Icon, label, content }) => (
                   <div key={label} className="flex items-start gap-4">
