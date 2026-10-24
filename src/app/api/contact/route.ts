@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+function getTransporter() {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return null;
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+  });
+}
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
@@ -20,9 +26,10 @@ export async function POST(req: NextRequest) {
       data: { name, email, company, phone, service, message },
     });
 
-    if (resend) {
-      await resend.emails.send({
-        from: "U-Class Cargo <onboarding@resend.dev>",
+    const transporter = getTransporter();
+    if (transporter) {
+      await transporter.sendMail({
+        from: `"U-Class Cargo" <${process.env.EMAIL_USER}>`,
         to: "uclasscargologistics@ukr.net",
         replyTo: email,
         subject: `New enquiry from ${name}${service ? ` — ${service}` : ""}`,
