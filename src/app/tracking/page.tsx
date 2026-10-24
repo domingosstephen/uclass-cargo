@@ -18,6 +18,8 @@ const MapView = dynamic(() => import("@/components/MapView"), {
   ),
 });
 
+const Barcode = dynamic(() => import("react-barcode"), { ssr: false });
+
 const STATUS_MAP: Record<string, { label: string; cls: string }> = {
   PENDING:    { label: "Pending",     cls: "status-pending" },
   IN_TRANSIT: { label: "In Transit",  cls: "status-in-transit" },
@@ -191,7 +193,19 @@ function TrackingContent() {
                     </span>
                   </div>
                   <p className="text-sm text-[#0a1628] font-medium mb-1">{shipment.description}</p>
-                  <p className="text-xs text-[#6a80a0]">{shipment.cargoType}</p>
+                  <p className="text-xs text-[#6a80a0] mb-4">{shipment.cargoType}</p>
+                  <div className="flex justify-center pt-2 border-t border-[#e2e8f4]">
+                    <Barcode
+                      value={shipment.trackingNumber}
+                      format="CODE128"
+                      width={1.4}
+                      height={48}
+                      fontSize={11}
+                      margin={0}
+                      background="transparent"
+                      lineColor="#0a1628"
+                    />
+                  </div>
                 </div>
 
                 {/* Route */}
