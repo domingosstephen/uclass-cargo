@@ -29,7 +29,8 @@
     "prisma": "^5.22.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "resend": "^6.34.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
