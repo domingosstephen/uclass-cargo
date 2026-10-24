@@ -12,18 +12,21 @@ export async function GET(req: NextRequest) {
   try {
     const shipment = await prisma.shipment.findUnique({
       where: { trackingNumber: trackingNumber.toUpperCase() },
-      include: {
-        events: {
-          orderBy: { timestamp: "asc" },
-        },
-      },
     });
 
     if (!shipment) {
       return NextResponse.json({ error: "Shipment not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ shipment });
+    let events: unknown[] = [];
+    try {
+      events = await prisma.shipmentEvent.findMany({
+        where: { shipmentId: shipment.id },
+        orderBy: { timestamp: "asc" },
+      });
+    } catch { /* ShipmentEvent table not yet created */ }
+
+    return NextResponse.json({ shipment: { ...shipment, events } });
   } catch (error) {
     console.error("Tracking error:", error);
     return NextResponse.json({ error: "Failed to fetch shipment" }, { status: 500 });

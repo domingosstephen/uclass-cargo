@@ -65,7 +65,7 @@ export default function TrackingCTA() {
               </span>
 
               <h2 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight">
-                Where Is Your<br />
+                Your Client Is Waiting.<br />
                 <span
                   style={{
                     background: "linear-gradient(135deg, #5aaeff 0%, #a8d4ff 60%)",
@@ -74,13 +74,13 @@ export default function TrackingCTA() {
                     backgroundClip: "text",
                   }}
                 >
-                  Cargo Right Now?
+                  Get the Answer Now.
                 </span>
               </h2>
 
               <p className="text-white/45 mb-10 max-w-lg mx-auto text-lg leading-relaxed">
-                Enter your U-Class tracking number to see your shipment
-                location on a live interactive map with full event history.
+                See exactly where your shipment is and when it arrives —
+                live on a map, with every update logged so you&apos;re never caught off guard.
               </p>
 
               <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto mb-6">

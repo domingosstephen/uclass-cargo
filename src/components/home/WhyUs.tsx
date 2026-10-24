@@ -8,33 +8,33 @@ import Link from "next/link";
 const reasons = [
   {
     icon: Clock,
-    title: "Real-Time Tracking",
-    description: "Every shipment updated live on an interactive map. Know exactly where your cargo is, every step of the way.",
+    title: "Always Know Where It Is",
+    description: "Live map updates at every milestone — so you can answer your client's \"where is my order?\" in seconds, not hours.",
   },
   {
     icon: MapPin,
-    title: "Strategic Location",
-    description: "Based in Genova — Italy's premier port city — with direct access to Mediterranean and global shipping routes.",
+    title: "Faster Port Clearance",
+    description: "Our Genova base means shorter transit windows and direct connections to Mediterranean and global routes.",
   },
   {
     icon: Shield,
-    title: "Fully Insured",
-    description: "Comprehensive cargo insurance for every shipment. Your goods are protected from pickup to final delivery.",
+    title: "Your Goods Are Covered",
+    description: "Full cargo insurance on every shipment. If something goes wrong, you're protected — we sort it, not you.",
   },
   {
     icon: Headphones,
-    title: "24/7 Support",
-    description: "Our dedicated operations team is available around the clock. Call, email, or chat — we're always here.",
+    title: "A Real Person, Any Hour",
+    description: "24/7 operations team on standby. Call, email, or chat — you'll reach someone who can actually help.",
   },
   {
     icon: BarChart3,
-    title: "Performance Reports",
-    description: "Detailed analytics and delivery reports to optimise your supply chain with data-driven insights.",
+    title: "Spot Problems Before They Cost You",
+    description: "Delivery reports and performance data so you can find delays before they become complaints.",
   },
   {
     icon: Award,
-    title: "15+ Years Experience",
-    description: "Over a decade of logistics expertise serving clients across Europe, Asia, and the Americas.",
+    title: "Proven Over 15+ Years",
+    description: "Hundreds of clients across Europe, Asia, and the Americas trust us because we've earned that trust repeatedly.",
   },
 ];
 
@@ -76,7 +76,7 @@ export default function WhyUs() {
               Why Choose Us
             </span>
             <h2 className="text-5xl lg:text-6xl font-black text-white leading-tight mb-8">
-              The U-Class<br />
+              Why Clients<br />
               <span
                 style={{
                   background: "linear-gradient(135deg, #f0c060 0%, #e8b832 40%, #f5d070 100%)",
@@ -85,20 +85,20 @@ export default function WhyUs() {
                   backgroundClip: "text",
                 }}
               >
-                Advantage
+                Choose U-Class
               </span>
             </h2>
             <p className="text-white/45 text-lg leading-relaxed mb-10">
-              We combine decades of logistics expertise with cutting-edge
-              technology to deliver shipments on time, every time.
+              You need cargo to arrive on time, intact, and without stress on
+              your end. That&apos;s exactly what we&apos;ve built our business to deliver.
             </p>
 
             <div className="space-y-4 mb-12">
               {[
-                "Direct access to Genova port operations",
-                "Customs broker partners in 50+ countries",
-                "Real-time map tracking for every shipment",
-                "Dedicated account manager for each client",
+                "Fewer delays — faster port clearance in Genova",
+                "No customs headaches — broker partners in 50+ countries",
+                "Full visibility — live map tracking on every shipment",
+                "One point of contact — dedicated account manager for you",
               ].map((point, i) => (
                 <motion.div
                   key={point}

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { ArrowLeft, Plus, Search } from "lucide-react";
 import DeleteShipmentButton from "@/components/admin/DeleteShipmentButton";
+import UpdateTrackingModal from "@/components/admin/UpdateTrackingModal";
 
 const STATUS_COLORS: Record<string, string> = {
   PENDING: "status-pending", IN_TRANSIT: "status-in-transit", AT_PORT: "status-at-port",
@@ -65,6 +66,7 @@ export default async function AllShipmentsPage() {
                     <td className="px-5 py-4 text-[#a0b0c8] text-xs whitespace-nowrap">{new Date(s.updatedAt).toLocaleDateString()}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
+                        <UpdateTrackingModal id={s.id} trackingNumber={s.trackingNumber} currentLocation={s.currentLocation} currentStatus={s.status} />
                         <Link
                           href={`/admin/shipments/${s.id}`}
                           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#0055ff] border border-[#0055ff]/20 hover:bg-[#0055ff]/5 transition-colors bg-white"

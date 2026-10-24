@@ -9,42 +9,42 @@ const services = [
   {
     icon: Ship,
     title: "Sea Freight",
-    description: "FCL and LCL services connecting major ports worldwide with competitive rates and full cargo visibility.",
+    description: "Move more for less. Our FCL and LCL ocean routes keep your costs low without sacrificing delivery certainty.",
     accent: "#0055ff",
     features: ["FCL & LCL", "Port-to-Port", "Door-to-Door"],
   },
   {
     icon: Plane,
     title: "Air Cargo",
-    description: "Expedited air freight for time-sensitive shipments with priority handling and real-time tracking.",
+    description: "Beat your deadline — every time. When hours matter, we get your goods in the air and at the door fast.",
     accent: "#0088cc",
     features: ["Express Delivery", "Charter Flights", "Temperature Control"],
   },
   {
     icon: Truck,
     title: "Land Transport",
-    description: "Reliable road freight across Europe and beyond. FTL and LTL options with live GPS tracking.",
+    description: "No surprises at the border. Live GPS tracking and a reliable driver network so you always know the ETA.",
     accent: "#b8941e",
     features: ["FTL & LTL", "Cross-Docking", "GPS Tracked"],
   },
   {
     icon: FileCheck,
     title: "Customs Clearance",
-    description: "Expert handling of all customs documentation, import/export permits, and compliance worldwide.",
+    description: "Sail through customs, not get stuck at it. We handle the paperwork so your cargo keeps moving.",
     accent: "#0055ff",
     features: ["Import & Export", "Duty Management", "Compliance"],
   },
   {
     icon: Warehouse,
     title: "Warehousing",
-    description: "Secure warehousing near Genova port with inventory management, cross-docking, and distribution.",
+    description: "Storage that works around your schedule. Flexible space near the port means faster dispatch when you need it.",
     accent: "#0088cc",
     features: ["Bonded Storage", "Inventory Mgmt", "Distribution"],
   },
   {
     icon: Package,
     title: "Project Cargo",
-    description: "Specialized handling for oversized, heavy-lift, and complex projects requiring custom solutions.",
+    description: "Nothing too big, nothing too complex. We engineer a route for oversized or high-value loads — end to end.",
     accent: "#b8941e",
     features: ["Heavy Lift", "Oversized Cargo", "Turnkey Solutions"],
   },
@@ -82,12 +82,12 @@ export default function ServicesSection() {
             What We Offer
           </span>
           <h2 className="text-5xl lg:text-6xl font-black text-[#0a1628] leading-tight mb-6">
-            Comprehensive<br />
-            <span className="text-gradient-blue">Logistics Services</span>
+            Move Anything,<br />
+            <span className="text-gradient-blue">Anywhere It Needs to Go</span>
           </h2>
           <p className="text-[#6a80a0] text-lg leading-relaxed">
-            From a single parcel to full vessel charters — every solution
-            engineered for reliability and speed.
+            Sea, air, land, or customs — pick the service that fits your shipment
+            and let us handle the rest so you can focus on your business.
           </p>
         </motion.div>
 

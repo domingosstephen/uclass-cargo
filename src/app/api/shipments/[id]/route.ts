@@ -7,6 +7,11 @@ async function isAdmin() {
   return cookieStore.get("uclass_admin_session")?.value === "authenticated";
 }
 
+const STATUS_LABELS: Record<string, string> = {
+  PENDING: "Pending", IN_TRANSIT: "In Transit", AT_PORT: "At Port",
+  CUSTOMS: "In Customs", DELIVERED: "Delivered", DELAYED: "Delayed",
+};
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -15,12 +20,13 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
-  const shipment = await prisma.shipment.findUnique({
-    where: { id },
-    include: { events: { orderBy: { timestamp: "asc" } } },
-  });
+  const shipment = await prisma.shipment.findUnique({ where: { id } });
   if (!shipment) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json({ shipment });
+  let events: unknown[] = [];
+  try {
+    events = await prisma.shipmentEvent.findMany({ where: { shipmentId: id }, orderBy: { timestamp: "asc" } });
+  } catch { /* table not created yet */ }
+  return NextResponse.json({ shipment: { ...shipment, events } });
 }
 
 export async function PUT(
@@ -33,52 +39,86 @@ export async function PUT(
   const { id } = await params;
   const data = await req.json();
 
-  const parseCoord = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+  const parseCoord = (v: unknown): number | undefined => {
+    if (v === undefined || v === null || v === "") return undefined;
+    const n = parseFloat(String(v));
+    return isNaN(n) ? 0 : n;
+  };
 
   try {
-    const updateData: Record<string, unknown> = {
-      status: data.status,
-      currentLocation: data.currentLocation,
-      currentLat: parseCoord(data.currentLat),
-      currentLng: parseCoord(data.currentLng),
-      description: data.description,
-      cargoType: data.cargoType,
-      weight: data.weight,
-      estimatedArrival: data.estimatedArrival,
-      clientName: data.clientName,
-      clientEmail: data.clientEmail,
-      notes: data.notes,
-      supplierName: data.supplierName,
-      supplierAddress: data.supplierAddress,
-      supplierTel: data.supplierTel,
-      consigneeName: data.consigneeName,
-      consigneeAddress: data.consigneeAddress,
-      consigneeTel: data.consigneeTel,
-      productName: data.productName,
-      quantity: data.quantity,
-      dateOfLoading: data.dateOfLoading,
-      vesselName: data.vesselName,
-      vesselNumber: data.vesselNumber,
-      nextTransitPort: data.nextTransitPort,
+    // Fetch existing so partial updates (e.g. tracking-only) don't overwrite other fields
+    const existing = await prisma.shipment.findUnique({ where: { id } });
+    if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    const newLocation = data.currentLocation ?? existing.currentLocation;
+    const newLat      = parseCoord(data.currentLat)  ?? existing.currentLat;
+    const newLng      = parseCoord(data.currentLng)  ?? existing.currentLng;
+    const newStatus   = data.status ?? existing.status;
+
+    const updateData = {
+      status:           newStatus,
+      currentLocation:  newLocation,
+      currentLat:       newLat,
+      currentLng:       newLng,
+      description:      data.description      ?? existing.description,
+      cargoType:        data.cargoType        ?? existing.cargoType,
+      weight:           data.weight           ?? existing.weight,
+      estimatedArrival: data.estimatedArrival ?? existing.estimatedArrival,
+      clientName:       data.clientName       ?? existing.clientName,
+      clientEmail:      data.clientEmail      ?? existing.clientEmail,
+      notes:            data.notes            ?? existing.notes,
+      supplierName:     data.supplierName     ?? existing.supplierName,
+      supplierAddress:  data.supplierAddress  ?? existing.supplierAddress,
+      supplierTel:      data.supplierTel      ?? existing.supplierTel,
+      consigneeName:    data.consigneeName    ?? existing.consigneeName,
+      consigneeAddress: data.consigneeAddress ?? existing.consigneeAddress,
+      consigneeTel:     data.consigneeTel     ?? existing.consigneeTel,
+      productName:      data.productName      ?? existing.productName,
+      quantity:         data.quantity         ?? existing.quantity,
+      dateOfLoading:    data.dateOfLoading    ?? existing.dateOfLoading,
+      vesselName:       data.vesselName       ?? existing.vesselName,
+      vesselNumber:     data.vesselNumber     ?? existing.vesselNumber,
+      nextTransitPort:  data.nextTransitPort  ?? existing.nextTransitPort,
     };
 
-    // Add a tracking event whenever a note is provided
-    if (data.eventDescription && data.eventDescription.trim()) {
-      await prisma.shipmentEvent.create({
-        data: {
-          shipmentId: id,
-          location: data.currentLocation,
-          lat: parseCoord(data.currentLat),
-          lng: parseCoord(data.currentLng),
-          description: data.eventDescription,
-        },
-      });
+    // Create a tracking event:
+    // - Always when a custom note is provided
+    // - Auto-create when location or status changes (so history is always built)
+    const locationChanged = newLocation !== existing.currentLocation;
+    const statusChanged   = newStatus !== existing.status;
+    const hasNote         = data.eventDescription && data.eventDescription.trim();
+
+    if (hasNote || locationChanged || statusChanged) {
+      let description: string;
+      if (hasNote) {
+        description = data.eventDescription.trim();
+      } else if (locationChanged && statusChanged) {
+        description = `${STATUS_LABELS[newStatus] || newStatus} — ${newLocation}`;
+      } else if (locationChanged) {
+        description = `Location updated to ${newLocation}`;
+      } else {
+        description = `Status changed to ${STATUS_LABELS[newStatus] || newStatus}`;
+      }
+
+      // Non-blocking: if ShipmentEvent table not yet in DB, update still succeeds
+      try {
+        await prisma.shipmentEvent.create({
+          data: {
+            shipmentId: id,
+            location: newLocation,
+            lat: newLat,
+            lng: newLng,
+            description,
+          },
+        });
+      } catch (eventErr) {
+        console.error("Event create failed (table may not exist yet):", eventErr);
+      }
     }
 
     const shipment = await prisma.shipment.update({
       where: { id },
       data: updateData,
-      include: { events: { orderBy: { timestamp: "asc" } } },
     });
 
     return NextResponse.json({ shipment });

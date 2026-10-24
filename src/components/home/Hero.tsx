@@ -86,23 +86,13 @@ export default function Hero() {
           animate="show"
           className="max-w-5xl"
         >
-          {/* Eyebrow */}
-          <motion.div variants={item} className="flex items-center gap-3 mb-8">
-            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur-sm">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
-              <span className="text-xs font-semibold tracking-[0.2em] text-white/80 uppercase">
-                Genova, Italy · Est. 2008
-              </span>
-            </div>
-          </motion.div>
-
           {/* Main heading */}
           <motion.h1
             variants={item}
             className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 tracking-wide"
             style={{ textShadow: "0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)" }}
           >
-            <span className="text-white">Delivering </span>
+            <span className="text-white">U-Class Cargo </span>
             <span
               style={{
                 background: "linear-gradient(135deg, #5aaeff 0%, #a8d4ff 50%, #7bbeff 100%)",
@@ -111,10 +101,10 @@ export default function Hero() {
                 backgroundClip: "text",
               }}
             >
-              Excellence
+              Logistics.
             </span>
             <br />
-            <span className="text-white/90">Across </span>
+            <span className="text-white/90">Your Trusted </span>
             <span
               style={{
                 background: "linear-gradient(135deg, #f0c060 0%, #e8b832 40%, #f5d070 100%)",
@@ -123,7 +113,7 @@ export default function Hero() {
                 backgroundClip: "text",
               }}
             >
-              Every Ocean
+              Global Shipping Company.
             </span>
           </motion.h1>
 
@@ -133,9 +123,9 @@ export default function Hero() {
             className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mb-10 font-light"
             style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
           >
-            End-to-end freight solutions by sea, air, and land.
-            Track your shipment in real time and trust your cargo to
-            expert hands across 50+ countries.
+            Stop worrying about where your shipment is. We handle sea, air,
+            and land freight across 50+ countries — with real-time tracking
+            so you and your clients always know what&apos;s happening.
           </motion.p>
 
           {/* CTAs */}
