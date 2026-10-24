@@ -192,8 +192,6 @@ function TrackingContent() {
                       {status?.label}
                     </span>
                   </div>
-                  <p className="text-sm text-[#0a1628] font-medium mb-1">{shipment.description}</p>
-                  <p className="text-xs text-[#6a80a0] mb-4">{shipment.cargoType}</p>
                   <div className="flex justify-center pt-2 border-t border-[#e2e8f4]">
                     <Barcode
                       value={shipment.trackingNumber}
@@ -227,6 +225,18 @@ function TrackingContent() {
                         <p className="text-sm text-[#0055ff] font-medium">{shipment.currentLocation}</p>
                       </div>
                     </div>
+                    {shipment.nextTransitPort && (
+                      <>
+                        <div className="pl-1.5"><div className="w-px h-6 bg-[#dde4f0]" /></div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-3 h-3 rounded-full bg-[#b8941e] mt-1 shrink-0" />
+                          <div>
+                            <p className="text-xs text-[#6a80a0]">Next Transit Port</p>
+                            <p className="text-sm text-[#0a1628] font-medium">{shipment.nextTransitPort}</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="pl-1.5"><div className="w-px h-6 bg-[#dde4f0] border-dashed" /></div>
                     <div className="flex items-start gap-3">
                       <div className="w-3 h-3 rounded-full bg-[#cc2020] mt-1 shrink-0" />
@@ -277,12 +287,6 @@ function TrackingContent() {
                   <div className="glass-card rounded-2xl p-6 shadow-sm">
                     <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Product &amp; Vessel</h3>
                     <div className="space-y-2">
-                      {shipment.weight && (
-                        <div className="flex justify-between">
-                          <span className="text-xs text-[#6a80a0]">Weight</span>
-                          <span className="text-xs text-[#0a1628]">{shipment.weight}</span>
-                        </div>
-                      )}
                       {shipment.productName && (
                         <div className="flex justify-between">
                           <span className="text-xs text-[#6a80a0]">Product</span>
@@ -293,6 +297,12 @@ function TrackingContent() {
                         <div className="flex justify-between">
                           <span className="text-xs text-[#6a80a0]">Quantity</span>
                           <span className="text-xs text-[#0a1628]">{shipment.quantity}</span>
+                        </div>
+                      )}
+                      {shipment.weight && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Weight</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.weight}</span>
                         </div>
                       )}
                       {shipment.dateOfLoading && (
