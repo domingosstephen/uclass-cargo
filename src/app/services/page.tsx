@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 type Service = { title: string; highlight: string; body: string; image?: string; imageAlt?: string };
 
@@ -111,22 +111,14 @@ export default function ServicesPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12 border border-[#e2e8f4] rounded-2xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+          className="mt-12 border border-[#e2e8f4] rounded-2xl p-8"
         >
-          <div>
-            <p className="text-[11px] font-mono tracking-widest text-[#6a80a0] uppercase mb-2">South American Partner</p>
-            <p className="text-lg font-semibold text-[#0a1628]">DC Logistics Brasil</p>
-            <p className="text-sm text-[#6a80a0] mt-0.5">Rua Cincinato Braga, 340 — São Paulo, SP, Brazil</p>
+          <p className="text-[11px] font-mono tracking-widest text-[#6a80a0] uppercase mb-4">Partners With</p>
+          <div className="flex flex-wrap items-center gap-6">
+            {["DC Logistics Brasil", "MSC", "MAERSK"].map((partner) => (
+              <span key={partner} className="text-base font-bold text-[#0a1628] tracking-tight">{partner}</span>
+            ))}
           </div>
-          <a
-            href="https://wa.me/5511952701046"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-3 rounded-xl border border-[#0055ff]/20 text-[#0055ff] text-sm font-semibold hover:bg-[#0055ff]/5 transition-colors shrink-0"
-          >
-            <Phone size={15} />
-            +55 (11) 9 5270-1046
-          </a>
         </motion.div>
 
         {/* CTA */}

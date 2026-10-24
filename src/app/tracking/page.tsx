@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Search, Package, MapPin, Clock, CheckCircle2,
-  AlertCircle, Loader2, Ship, ArrowRight,
+  Search, MapPin, CheckCircle2,
+  AlertCircle, Loader2, Ship,
 } from "lucide-react";
 
 const MapView = dynamic(() => import("@/components/MapView"), {
@@ -233,32 +233,6 @@ function TrackingContent() {
                   )}
                 </div>
 
-                {/* Details */}
-                <div className="glass-card rounded-2xl p-6 shadow-sm">
-                  <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Details</h3>
-                  <div className="space-y-3">
-                    {shipment.weight && (
-                      <div className="flex items-center gap-2">
-                        <Package size={14} className="text-[#a0b0c8]" />
-                        <span className="text-xs text-[#6a80a0]">Weight:</span>
-                        <span className="text-xs text-[#0a1628]">{shipment.weight}</span>
-                      </div>
-                    )}
-                    {shipment.clientName && (
-                      <div className="flex items-center gap-2">
-                        <Ship size={14} className="text-[#a0b0c8]" />
-                        <span className="text-xs text-[#6a80a0]">Client:</span>
-                        <span className="text-xs text-[#0a1628]">{shipment.clientName}</span>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2">
-                      <Clock size={14} className="text-[#a0b0c8]" />
-                      <span className="text-xs text-[#6a80a0]">Last Update:</span>
-                      <span className="text-xs text-[#0a1628]">{new Date(shipment.updatedAt).toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Supplier & Consignee */}
                 {(shipment.supplierName || shipment.consigneeName) && (
                   <div className="glass-card rounded-2xl p-6 shadow-sm">
@@ -285,10 +259,16 @@ function TrackingContent() {
                 )}
 
                 {/* Vessel & Product */}
-                {(shipment.vesselName || shipment.productName) && (
+                {(shipment.vesselName || shipment.productName || shipment.weight) && (
                   <div className="glass-card rounded-2xl p-6 shadow-sm">
                     <h3 className="text-xs font-semibold tracking-widest text-[#6a80a0] uppercase mb-4">Product &amp; Vessel</h3>
                     <div className="space-y-2">
+                      {shipment.weight && (
+                        <div className="flex justify-between">
+                          <span className="text-xs text-[#6a80a0]">Weight</span>
+                          <span className="text-xs text-[#0a1628]">{shipment.weight}</span>
+                        </div>
+                      )}
                       {shipment.productName && (
                         <div className="flex justify-between">
                           <span className="text-xs text-[#6a80a0]">Product</span>
@@ -351,7 +331,6 @@ function TrackingContent() {
                           <div className="pb-4">
                             <p className="text-xs font-semibold text-[#0a1628]">{event.location}</p>
                             <p className="text-xs text-[#6a80a0] mt-0.5">{event.description}</p>
-                            <p className="text-[10px] text-[#a0b0c8] mt-1">{new Date(event.timestamp).toLocaleString()}</p>
                           </div>
                         </div>
                       ))}
