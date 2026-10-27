@@ -261,3 +261,16 @@ body {
 .section-alt {
   background: #f4f8ff;
 }
+
+/* Print / PDF styles */
+@media print {
+  body { background: #fff !important; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  nav, footer, form { display: none !important; }
+  .lg\:col-span-3 { display: none !important; }
+  .lg\:col-span-2 { grid-column: span 1 !important; }
+  .glass-card { box-shadow: none !important; border: 1px solid #dde4f0 !important; }
+  .glass-nav { display: none !important; }
+  @page { margin: 1.5cm; }
+}

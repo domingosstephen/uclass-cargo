@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, MapPin, Clock, CheckCircle2,
-  AlertCircle, Loader2, Ship,
+  AlertCircle, Loader2, Ship, Download,
 } from "lucide-react";
 
 const MapView = dynamic(() => import("@/components/MapView"), {
@@ -182,6 +182,13 @@ function TrackingContent() {
             >
               {/* Details panel */}
               <div className="lg:col-span-2 flex flex-col gap-4">
+                {/* Print header — hidden on screen */}
+                <div className="hidden print:block mb-4">
+                  <p className="text-xl font-bold text-[#0a1628]">U-Class Cargo Logistics</p>
+                  <p className="text-xs text-[#6a80a0]">Via Dante, 2 · 16121 Genova GE, Italy · contact@uclasscargo.com</p>
+                  <div className="border-t border-[#dde4f0] mt-3" />
+                </div>
+
                 <div className="glass-card rounded-2xl p-6 shadow-sm">
                   <div className="flex items-start justify-between mb-4">
                     <div>
@@ -204,6 +211,13 @@ function TrackingContent() {
                       lineColor="#0a1628"
                     />
                   </div>
+                  <button
+                    onClick={() => window.print()}
+                    className="no-print mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#0055ff]/30 text-[#0055ff] text-sm font-semibold hover:bg-[#0055ff]/5 transition-colors"
+                  >
+                    <Download size={15} />
+                    Download PDF
+                  </button>
                 </div>
 
                 {/* Route */}
