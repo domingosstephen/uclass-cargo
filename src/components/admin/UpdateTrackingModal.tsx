@@ -7,8 +7,11 @@ import { MapPin, Loader2, CheckCircle2, AlertCircle, X } from "lucide-react";
 const STATUS_OPTIONS = [
   { value: "PENDING", label: "Pending" },
   { value: "IN_TRANSIT", label: "In Transit" },
+  { value: "DEPARTED", label: "Departed" },
   { value: "AT_PORT", label: "At Port" },
   { value: "CUSTOMS", label: "In Customs" },
+  { value: "OUT_FOR_DELIVERY", label: "Out for Delivery" },
+  { value: "ON_HOLD", label: "On Hold" },
   { value: "DELIVERED", label: "Delivered" },
   { value: "DELAYED", label: "Delayed" },
 ];

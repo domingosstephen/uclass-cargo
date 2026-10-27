@@ -237,12 +237,15 @@ body {
 }
 
 /* Status badges */
-.status-pending    { background: rgba(184, 148, 30, 0.1); color: #926a00; border: 1px solid rgba(184, 148, 30, 0.3); }
-.status-in-transit { background: rgba(0, 85, 255, 0.08); color: #0040cc; border: 1px solid rgba(0, 85, 255, 0.25); }
-.status-at-port    { background: rgba(0, 136, 204, 0.08); color: #006699; border: 1px solid rgba(0, 136, 204, 0.25); }
-.status-customs    { background: rgba(220, 140, 0, 0.1); color: #9a5c00; border: 1px solid rgba(220, 140, 0, 0.3); }
-.status-delivered  { background: rgba(0, 160, 80, 0.08); color: #006630; border: 1px solid rgba(0, 160, 80, 0.25); }
-.status-delayed    { background: rgba(220, 50, 50, 0.08); color: #cc2020; border: 1px solid rgba(220, 50, 50, 0.25); }
+.status-pending          { background: rgba(184, 148, 30, 0.1);  color: #926a00; border: 1px solid rgba(184, 148, 30, 0.3); }
+.status-in-transit       { background: rgba(0, 85, 255, 0.08);   color: #0040cc; border: 1px solid rgba(0, 85, 255, 0.25); }
+.status-departed         { background: rgba(100, 60, 200, 0.08); color: #5030aa; border: 1px solid rgba(100, 60, 200, 0.25); }
+.status-at-port          { background: rgba(0, 136, 204, 0.08);  color: #006699; border: 1px solid rgba(0, 136, 204, 0.25); }
+.status-customs          { background: rgba(220, 140, 0, 0.1);   color: #9a5c00; border: 1px solid rgba(220, 140, 0, 0.3); }
+.status-out-for-delivery { background: rgba(0, 170, 100, 0.08);  color: #007040; border: 1px solid rgba(0, 170, 100, 0.25); }
+.status-on-hold          { background: rgba(150, 150, 150, 0.1); color: #555555; border: 1px solid rgba(150, 150, 150, 0.3); }
+.status-delivered        { background: rgba(0, 160, 80, 0.08);   color: #006630; border: 1px solid rgba(0, 160, 80, 0.25); }
+.status-delayed          { background: rgba(220, 50, 50, 0.08);  color: #cc2020; border: 1px solid rgba(220, 50, 50, 0.25); }
 
 /* Container */
 .container-custom {

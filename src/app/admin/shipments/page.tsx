@@ -7,12 +7,14 @@ import DeleteShipmentButton from "@/components/admin/DeleteShipmentButton";
 import UpdateTrackingModal from "@/components/admin/UpdateTrackingModal";
 
 const STATUS_COLORS: Record<string, string> = {
-  PENDING: "status-pending", IN_TRANSIT: "status-in-transit", AT_PORT: "status-at-port",
-  CUSTOMS: "status-customs", DELIVERED: "status-delivered", DELAYED: "status-delayed",
+  PENDING: "status-pending", IN_TRANSIT: "status-in-transit", DEPARTED: "status-departed",
+  AT_PORT: "status-at-port", CUSTOMS: "status-customs", OUT_FOR_DELIVERY: "status-out-for-delivery",
+  ON_HOLD: "status-on-hold", DELIVERED: "status-delivered", DELAYED: "status-delayed",
 };
 const STATUS_LABELS: Record<string, string> = {
-  PENDING: "Pending", IN_TRANSIT: "In Transit", AT_PORT: "At Port",
-  CUSTOMS: "In Customs", DELIVERED: "Delivered", DELAYED: "Delayed",
+  PENDING: "Pending", IN_TRANSIT: "In Transit", DEPARTED: "Departed",
+  AT_PORT: "At Port", CUSTOMS: "In Customs", OUT_FOR_DELIVERY: "Out for Delivery",
+  ON_HOLD: "On Hold", DELIVERED: "Delivered", DELAYED: "Delayed",
 };
 
 export default async function AllShipmentsPage() {

@@ -21,12 +21,15 @@ const MapView = dynamic(() => import("@/components/MapView"), {
 const Barcode = dynamic(() => import("react-barcode"), { ssr: false });
 
 const STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  PENDING:    { label: "Pending",     cls: "status-pending" },
-  IN_TRANSIT: { label: "In Transit",  cls: "status-in-transit" },
-  AT_PORT:    { label: "At Port",     cls: "status-at-port" },
-  CUSTOMS:    { label: "In Customs",  cls: "status-customs" },
-  DELIVERED:  { label: "Delivered",   cls: "status-delivered" },
-  DELAYED:    { label: "Delayed",     cls: "status-delayed" },
+  PENDING:          { label: "Pending",          cls: "status-pending" },
+  IN_TRANSIT:       { label: "In Transit",       cls: "status-in-transit" },
+  DEPARTED:         { label: "Departed",         cls: "status-departed" },
+  AT_PORT:          { label: "At Port",          cls: "status-at-port" },
+  CUSTOMS:          { label: "In Customs",       cls: "status-customs" },
+  OUT_FOR_DELIVERY: { label: "Out for Delivery", cls: "status-out-for-delivery" },
+  ON_HOLD:          { label: "On Hold",          cls: "status-on-hold" },
+  DELIVERED:        { label: "Delivered",        cls: "status-delivered" },
+  DELAYED:          { label: "Delayed",          cls: "status-delayed" },
 };
 
 interface ShipmentEvent {
