@@ -92,6 +92,7 @@ export default function ShipmentForm({ mode, shipment }: Props) {
   }
 
   const [form, setForm] = useState({
+    trackingNumber:   shipment?.trackingNumber   ?? "",
     description:      shipment?.description      ?? "",
     origin:           shipment?.origin           ?? "",
     originLat:        String(shipment?.originLat       ?? ""),
@@ -132,7 +133,7 @@ export default function ShipmentForm({ mode, shipment }: Props) {
     setLoading(true);
     setError("");
     try {
-      const body = { ...form, addEvent, eventDescription };
+      const body = { ...form, trackingNumber: form.trackingNumber.trim() || undefined, addEvent, eventDescription };
       let res: Response;
       if (mode === "create") {
         res = await fetch("/api/shipments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
@@ -184,6 +185,10 @@ export default function ShipmentForm({ mode, shipment }: Props) {
       <div className={cardClass}>
         <h3 className={sectionTitle}>Shipment Information</h3>
         <div className="grid sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2">
+            <label className={labelClass}>Tracking Number{mode === "create" && <span className="text-[#a0b0c8] ml-1">(leave blank to auto-generate)</span>}</label>
+            <input name="trackingNumber" value={form.trackingNumber} onChange={handleChange} placeholder="e.g. UCL-202512345" className={`${fieldClass} font-mono`} />
+          </div>
           <div className="sm:col-span-2">
             <label className={labelClass}>Description *</label>
             <input name="description" value={form.description} onChange={handleChange} required placeholder="e.g. Industrial machinery components" className={fieldClass} />
@@ -380,11 +385,6 @@ export default function ShipmentForm({ mode, shipment }: Props) {
         )}
       </div>
 
-      {mode === "create" && (
-        <p className="text-xs text-[#a0b0c8] text-center">
-          A unique tracking number (UCL-XXXXXXXXX) will be automatically generated.
-        </p>
-      )}
     </form>
   );
 }

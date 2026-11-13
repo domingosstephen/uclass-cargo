@@ -56,7 +56,7 @@ export async function PUT(
     const newLng      = parseCoord(data.currentLng)  ?? existing.currentLng;
     const newStatus   = data.status ?? existing.status;
 
-    const updateData = {
+    const updateData: Record<string, unknown> = {
       status:           newStatus,
       currentLocation:  newLocation,
       currentLat:       newLat,
@@ -81,6 +81,11 @@ export async function PUT(
       vesselNumber:     data.vesselNumber     ?? existing.vesselNumber,
       nextTransitPort:  data.nextTransitPort  ?? existing.nextTransitPort,
     };
+
+    // Only update trackingNumber if operator explicitly provided one
+    if (data.trackingNumber && data.trackingNumber.trim()) {
+      updateData.trackingNumber = data.trackingNumber.trim();
+    }
 
     // Create a tracking event:
     // - Always when a custom note is provided
@@ -125,6 +130,10 @@ export async function PUT(
     return NextResponse.json({ shipment });
   } catch (error) {
     console.error("Update shipment error:", error);
+    // Prisma unique constraint violation (duplicate tracking number)
+    if (typeof error === "object" && error !== null && "code" in error && (error as { code: string }).code === "P2002") {
+      return NextResponse.json({ error: "That tracking number is already in use by another shipment." }, { status: 409 });
+    }
     return NextResponse.json({ error: "Failed to update shipment" }, { status: 500 });
   }
 }

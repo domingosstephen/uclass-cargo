@@ -25,10 +25,12 @@ export async function POST(req: NextRequest) {
 
   const data = await req.json();
 
-  // Generate tracking number
+  // Use operator-provided tracking number or auto-generate one
   const year = new Date().getFullYear();
   const rand = Math.floor(Math.random() * 90000) + 10000;
-  const trackingNumber = `UCL-${year}${rand}`;
+  const trackingNumber = (data.trackingNumber && data.trackingNumber.trim())
+    ? data.trackingNumber.trim()
+    : `UCL-${year}${rand}`;
 
   const parseLat = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
   const parseLng = (v: string) => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
@@ -79,6 +81,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ shipment, trackingNumber }, { status: 201 });
   } catch (error) {
     console.error("Create shipment error:", error);
+    if (typeof error === "object" && error !== null && "code" in error && (error as { code: string }).code === "P2002") {
+      return NextResponse.json({ error: "That tracking number is already in use by another shipment." }, { status: 409 });
+    }
     return NextResponse.json({ error: "Failed to create shipment" }, { status: 500 });
   }
 }
